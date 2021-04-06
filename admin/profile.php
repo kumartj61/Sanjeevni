@@ -164,16 +164,16 @@
               </div>
             </form>
 
-            <form action="./edit_mail.php" method="get">
+            <form action="./edit_mail.php" method="post">
             <div class="card-text ">
-                <label  for="Change-Email">Change Email <label>
-                <button name="Change-Email" class="btn btn-info " style="margin-left:20px ">Change</button>
+                <label  for="UserEmail">Change Email <label>
+                <button name="UserEmail" class="btn btn-info " style="margin-left:20px " value="'.$user_email.'">Change</button>
             </div>
             </form>
-            <form method>
+            <form method="post" action="edit_pass.php">
                 <div class="card-text ">
                 <label  for="Change-pass"> Password <label>
-                <button name="Change-pass" class="btn btn-warning" style="margin-left:50px ">Change</button>
+                <button name="Email" class="btn btn-warning" style="margin-left:50px " value="'.$user_email.'">Change</button>
               </div>
               </form>
 

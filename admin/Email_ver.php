@@ -36,62 +36,91 @@ include '../includes/db.php';
 session_start();
 $match='';
 $OTP=0;
-if(isset($_GET['email'])){
+if(isset($_POST['email'])){
   #echo "received";
+  $sql = "select * from user where `user_email`='".$_POST['email']."'";
+  $result = mysqli_query($conn,$sql);
+  if(mysqli_num_rows($result)==0){
 
+    $_SESSION['OTP'] = mt_rand(1000,9999);
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->SMTPSecure = 'tls';
+    $mail->SMTPAuth = true;
+    $mail->Host = 'smtp.gmail.com';
+    $mail->Port = 587;
+    $mail->Username = 'tushargope.cse2019@ritroorkee.com';
+    $mail->Password = 'Mail.sis66';
+    $mail->setFrom('tushargope.cse2019@ritroorkee.com');
+    $mail->addAddress($_POST['email']);
+    $mail->Subject = 'Email Verification Code From MySanjeevni';
+    $mail->Body = $_POST['email'].'Greetings from MySanjeevni  New User your OTP for EmailVerification is '.$_SESSION['OTP'];
+    //send the message, check for errors
+    if (!$mail->send()) {
+      echo "ERROR: " . $mail->ErrorInfo;
+    } else {
+      #echo "SUCCESS";
 
-  $_SESSION['OTP'] = mt_rand(1000,9999);
-  $mail = new PHPMailer;
-  $mail->isSMTP();
-  $mail->SMTPSecure = 'tls';
-  $mail->SMTPAuth = true;
-  $mail->Host = 'smtp.gmail.com';
-  $mail->Port = 587;
-  $mail->Username = 'tushargope.cse2019@ritroorkee.com';
-  $mail->Password = 'Mail.sis66';
-  $mail->setFrom('tushargope.cse2019@ritroorkee.com');
-  $mail->addAddress($_GET['email']);
-  $mail->Subject = 'Email Verification Code From MySanjeevni';
-  $mail->Body = $_GET['user'].'Greetings from MySanjeevni  New User your OTP for EmailVerification is '.$_SESSION['OTP'];
-  //send the message, check for errors
-  if (!$mail->send()) {
-  echo "ERROR: " . $mail->ErrorInfo;
-  } else {
-  #echo "SUCCESS";
+      echo'
 
-  echo'
-
-  <div class=" form-group " align="center">
-    <div class="card bg-dark  " style=" width:70%" >
-      <form class=" card-body d-sm-block align-self-center" role="form" method="get" action="mail_ver.php?otp='.$OTP.'">
-        <div class="card-header p-1 bg-secondary text-light" align="center">Verification</div>
-      <div class=" input-group p-2 " >
-        <div class=" input-group ml-2">
-          <div class="input-group-prepend">
-            <span class="input-group-text ">Enter OTP</span>
-          </div>
-          <input type="number" name="OTP" class="form-control" placeholder="OTP here" required ></input>
-          <input type="hidden" value="'.$_GET['email'].'" name="user_name"></input>
+    <div class=" form-group " align="center">
+      <div class="card bg-dark  " style=" width:70%" >
+        <form class=" card-body d-sm-block align-self-center" role="form" method="post" action="Email_ver.php">
+          <div class="card-header p-1 bg-secondary text-light" align="center">Verification</div>
+        <div class=" input-group p-2 " >
+          <div class=" input-group ml-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text ">Enter OTP</span>
+            </div>
+            <input type="number" name="OTP" class="form-control" placeholder="OTP here" required ></input>
+            <input type="hidden" value="'.$_POST['email'].'" name="new_email"></input>
+            <input type="hidden" value="'.$_POST['UserEmail'].'" name="UserEmail"></input>
+        </div>
       </div>
-    </div>
 
-    <div class=" p-1" style="width:100%">
-      <button class="btn btn-success ml-2 col-sm-10" >submit</button>
-    </div>
-    <div class="ml-2"><a href="./register.php"> Didnot recieved code?</a></div>
-  </form>
-  </div >
-</div>
-  ';
-}}
+      <div class=" p-1" style="width:100%">
+        <button class="btn btn-success ml-2 col-sm-10" >submit</button>
+      </div>
+      <div class="ml-2"><a href="./register.php"> Didnot recieved code?</a></div>
+    </form>
+    </div >
+  </div>
+    ';
+      }
+    }
+    else{
+      echo '
+      <div class=" form-group " align="center">
+        <div class="card bg-dark  " style=" width:70%" >
+          <form class=" card-body d-sm-block align-self-center" role="form" method="post" action="profile.php">
+            <div class="card-header p-1 bg-secondary text-light" align="center">Verification</div>
+          <div class=" input-group p-2 " >
+            <div class=" input-group ml-2">
 
-elseif(isset($_GET['OTP'])) {
+                <span class="alert alert-danger ">Email Already Registered</span>
+
+          </div>
+        </div>
+
+        <div class=" p-1" style="width:100%">
+          <button class="btn btn-success ml-2 col-sm-10" >Profile</button>
+        </div>
+
+      </form>
+      </div >
+    </div>';
+    }
+  }
+
+elseif(isset($_POST['OTP'])) {
   $test = 'nothing';
-  if($_GET['OTP'] == $_SESSION['OTP']){
+  if($_POST['OTP'] == $_SESSION['OTP']){
     echo '<div class="alert alert-success ">Email verified</div>';
-      $sql="update `user` set `user_email` = '".$_GET['user_name']."' where `user_email`=='".$_SESSION['user']."' ;";
-        if($query = mysqli_query($conn,$sql)){
+      $sql="update `user` set `user_email` = '".$_POST['new_email']."' where `user_email`='".$_POST['UserEmail']."' ;";
+      $sqlCms="update `CmsSystem` set `author` = '".$_POST['new_email']."' where `author`='".$_POST['UserEmail']."' ;";
+        if(mysqli_query($conn,$sql)&&mysqli_query($conn,$sqlCms)){
           echo "<div class='alert alert-success'> successfull</div>";
+          $_SESSION['user']=$_POST['new_email'];
         }
         else{
             echo "<div class='alert alert-success'>Unable to Change email</div>";

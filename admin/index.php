@@ -97,10 +97,10 @@
         </div>
         <div class="card-footer text-white" >
           <div class="float-left  ">
-            <a href="#" class="text-white">View Posts</a>
+            <a href="post_list.php" class="text-white">View Posts</a>
           </div>
           <div class="float-right">
-            <a href="#" ><i  class="fa fa-arrow-circle-left fa-2x text-white" ></i></a>
+            <a href="post_list.php" ><i  class="fa fa-arrow-circle-left fa-2x text-white" ></i></a>
           </div>
           <div class="clearfix"></div>
         </div>

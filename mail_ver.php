@@ -88,7 +88,7 @@ elseif(isset($_GET['OTP'])) {
     if($_SESSION['img_flag']=='true'){
       if($test = move_uploaded_file($_SESSION['image_tmp'],$_SESSION['image_path'])){
 
-        $sql="insert into `user` (`role`, `user_name`, `user_email`, `user_pass`, `user_gender`, `country`, `DOB`, `marital_status`, `desig`, `about_me`, `profile_pic`) VALUES ('subscriber', '".$_SESSION['name']."', '".$_SESSION['email']."', '".$_SESSION['password']."', '".$_SESSION['gender']."', '".$_SESSION['country']."', '".$_SESSION['dob']."', '".$_SESSION['marital_status']."', '".$_SESSION['desig']."', '".$_SESSION['about_me']."', '".$_SESSION['image_path']."');";
+        $sql="insert into `user` (`role`, `user_name`, `user_email`, `user_pass`, `user_gender`, `country`, `DOB`, `marital_status`, `desig`, `about_me`, `profile_pic`) VALUES ('subscriber', '".$_SESSION['name']."', '".$_SESSION['email']."', '".password_hash($_SESSION['password'],PASSWORD_DEFAULT)."', '".$_SESSION['gender']."', '".$_SESSION['country']."', '".$_SESSION['dob']."', '".$_SESSION['marital_status']."', '".$_SESSION['desig']."', '".$_SESSION['about_me']."', '".$_SESSION['image_path']."');";
         if($query = mysqli_query($conn,$sql)){
           echo "<div class='alert alert-success'>Account created successfully</div>";
         }

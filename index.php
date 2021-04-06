@@ -41,11 +41,7 @@
   nav{
       opacity: .9;
   }
-  #loading{
-    width: 100%;
-    height: 100vh;
-    background: "icon/95.gif"
-  }
+
 
   .img-bg {
     position: fixed;

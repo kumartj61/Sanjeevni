@@ -17,12 +17,27 @@
     .cor{
         cursor: pointer;
     }
+
+  	.img-bg {
+      position: fixed;
+      align: center;
+      top:2px;
+      height:800px;
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+      z-index: -1;
+  }
   </style>
+
+  <title>Search Result</title>
 </head>
-<body class="bg-secondary">
+
+
+<body class="bg-primary">
 <!-- Nav-Section-->
   <?php include 'includes/header.php'?>
 <!-- card-section-->
+
 <?php
 if(isset($_GET['search'])){
 echo'
@@ -30,6 +45,11 @@ echo'
 }
 ?>
   <div class="row bg-secondary" style="font-family:Timesnewroman">
+    <div  >
+      <img class="responsive img-bg" style="background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;" src="icon/antioxidant.jpg" ></img>
+    </div>
     <article class="col-sm-8">
     <?php
     if(isset($_GET['search'])){

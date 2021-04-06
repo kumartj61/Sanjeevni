@@ -30,7 +30,7 @@
     <img src="icon/banner.png" style="width:300px"></img>
   </div>
 </div>
-<nav class="navbar sticky-top navbar-light navbar-expand-sm bg-light  mr-0 "   >
+<nav class="navbar sticky-top navbar-light navbar-expand-sm bg-light "   >
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#btn_target">
     <span class="navbar-toggler-icon"></span>
